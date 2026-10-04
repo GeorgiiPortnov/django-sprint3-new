@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1 class="mb-5">Лента записей</h1>
+  {% for post in posts %}
+    <article class="mb-5">
+      <h2>
+        <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
+      </h2>
+      <p>
+        {{ post.pub_date|date:"d E Y" }} |
+        {% if post.location and post.location.is_published %}
+          {{ post.location.name }} |
+        {% endif %}
+        Категория:
+        <a href="{% url 'blog:category_posts' post.category.slug %}">
+          {{ post.category.title }}
+        </a>
+      </p>
+      <p>{{ post.text|truncatewords:30 }}</p>
+    </article>
+  {% empty %}
+    <p>Пока нет публикаций.</p>
+  {% endfor %}
+{% endblock %}
