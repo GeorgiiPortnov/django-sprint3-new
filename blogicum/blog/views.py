@@ -42,7 +42,7 @@ def category_posts(request, category_slug):
     post_list = category.posts.filter(
         is_published=True,
         pub_date__lte=timezone.now(),
-    )[:POSTS_LIMIT]
+    )
 
     context = {
         'category': category,
