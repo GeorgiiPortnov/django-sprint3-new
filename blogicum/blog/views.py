@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 
 from .models import Category, Post
-from .constants import POSTS_LIMIT  # ⚠️ Убедись, что здесь нет опечатки!
+from .constants import POSTS_LIMIT
 
 
 def index(request):
@@ -29,16 +29,12 @@ def post_detail(request, id):
 
 
 def category_posts(request, category_slug):
-    # 1. Находим категорию (если нет — сразу 404)
     category = get_object_or_404(
         Category,
         slug=category_slug,
         is_published=True,
     )
 
-    # 2. Используем related_name ('posts'), который мы задали в модели.
-    # category.posts -> это менеджер запросов для постов этой категории.
-    # Нам НЕ нужно писать category=category внутри filter, связь уже есть!
     post_list = category.posts.filter(
         is_published=True,
         pub_date__lte=timezone.now(),
